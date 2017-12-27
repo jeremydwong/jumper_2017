@@ -31,5 +31,5 @@ state0 = [fi0,state_nonshift(1,5:end)];
 e_base = energy(state_base,o_base,P);
 %% animate
 [h_vid,state_vid,o_vid]=run4seg_P([fi0,state_nonshift(1,5:end)],...
-                                  o_nonshift.stim(1,:),tstim_baseP,1);
+                                  o_nonshift.stim(1,:),tstim_base,P,1);
 animate_jump(o_vid.x,o_vid.y,o_vid.cmx,o_vid.cmy);

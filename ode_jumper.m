@@ -180,23 +180,7 @@ for imus=1:nmus
         
         %       % this is the hill 1938 equation, scaled for stimulation
         vcerel(imus)=-vfact(imus) * (brel(imus)*(flenrel(imus)+adarel(imus))/(fcerel(imus)/q(imus)+adarel(imus))-brel(imus));
-        if isfield(P.m,'vcelinear')
-            alin = 1/13;%
-            blin = 1;
-            fvel =  fcerel(imus)/q(imus)/flenrel(imus);
-            vcerel(imus) = (fvel - blin) / alin;
-        elseif isfield(P.m,'vcehyperpos')
-            a= 0.3708;b=   -2.4083; c=31.6767;d=1.0062;
-            xtemp=fcerel(imus)/q(imus);
-            vcerel(imus) = a * 1/(b*xtemp - c) + d;
-            lbnd = -13;ubnd = 0;
-            vcerel(imus) = vcerel(imus) + (vcerel(imus) < lbnd) * (lbnd - vcerel(imus))+ (vcerel(imus) > ubnd) * (ubnd - vcerel(imus));
-        elseif isfield(P.m,'vcelinearhalf')
-            alin = 1/13;%
-            blin = 1;
-            fvel =  fcerel(imus)/q(imus)/flenrel(imus);
-            vcerel(imus) = 0.5*vcerel(imus) + 0.5*(fvel - blin) / alin;
-        end;
+        
     else        % eccentric
         p2=-flenrel(imus)*fasympt(imus);
         p1=(-1/slopfac(imus))*vfact(imus)*brel(imus)*(flenrel(imus)+p2)^2/(flenrel(imus)+adarel(imus));
