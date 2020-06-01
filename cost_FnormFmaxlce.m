@@ -21,7 +21,7 @@ F_isom = lcerel.^2.*c1 + lcerel.*c2 + c3;
 Fs = Fs(:);
 %1. Fcost is the sum of the forces
 Fcost = sum( (Fs ./ (fmax(:) .* F_isom(:) ) ).^2);
-Lcecost = sum((lcerel>1.39).*(lcerel-1.39).^2)*2;
+Lcecost = sum((lcerel>1.39).*(lcerel-1.39).^2)*1000;
 qcost1=0;
 qcost2=0;
 

@@ -2,8 +2,9 @@ function [height,state,o]=run4seg_P(istate,istim,tstart,P,varargin)
 % function [height,state,o]=run4seg_P(tstart,istate,istim,P,varargin)
 % This function computes the jump height. squat jump, no counter-movements.
 % INPUTS:
-% tstart = onset timing of the 6 muscles.
 % istate = angles[1:4],angular velocities[5:8],footX[9],footY[10],
+% istim: initial stim.
+% tstart = onset timing of the 6 muscles.
 % P = structure of model parameters. this is currently done by loading a
 % table of data from getJumperParams (returns a matrix) and then
 % getJumperStruct(inMatrix)
@@ -18,7 +19,7 @@ xbasep = istate(11:12);
 clcerel = istate(13:18);
 cgamma = istate(19:24);
 numvarargs = length(varargin);
-
+tstart=tstart-min(tstart)+0.01; %keep things positive in tstart. 
 istim = istim(:)';
 
 num_maxvarargs = 1;
@@ -84,9 +85,9 @@ solver_handle = @ode45;
 odeopts = odeset('events',@events_jumper);
 t_all = 0;
 state_all = state0(:)';
-i_mode = 1;
-while(i_mode < (P.i_max+1) & ct<P.t_max) % loop through timesteps and simulate.
-    [t,state,te,ye,ie]=solver_handle(ode_handle,ct:stepsize:P.t_max,state0,odeopts,P);    
+P.i_mode = 1;
+while (P.i_mode < (P.i_max+1)) & ct<P.t_max % loop through timesteps and simulate.
+  [t,state,te,ye,ie]=solver_handle(ode_handle,ct:stepsize:P.t_max,state0,odeopts,P);    
     state_all = [state_all;state(1:end-1,:)];
     t_all=[t_all;t(1:end-1)];
     % note: annoyingly, removing the end doesn't guarantee you don't get
@@ -96,11 +97,16 @@ while(i_mode < (P.i_max+1) & ct<P.t_max) % loop through timesteps and simulate.
     
     ct = t(end);
     state0 = state(end,:);
-    P.i_mode = P.i_mode + 1; %shift mode schedule enum up 1.
-    i_mode = P.i_mode;
-    if P.i_mode ==8
-        P.sim.air = 1;
-        ind_off = length(t_all);
+    if P.i_mode<length(P.tstart)+1
+      tOnLast = P.t_stim_sorted(P.i_mode);
+      num = sum(P.tstart==tOnLast);
+      P.i_mode = P.i_mode + num; %shift mode schedule enum up 1.
+    elseif P.i_mode ==7
+      P.i_mode = P.i_mode + 1; %shift mode schedule enum up 1.
+      ind_off = length(t_all);
+      P.sim.air = 1;
+    elseif P.i_mode ==8
+      P.i_mode = P.i_mode + 1;
     end
 end
 

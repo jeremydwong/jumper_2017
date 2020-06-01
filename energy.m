@@ -48,16 +48,25 @@ j_ekliny = .5*repmat(p.sk.mass(:)',lBASE,1).*(dy.^2);
 j_eklin = j_eklinx+j_ekliny;
 js_ekrot = .5*(repmat(p.sk.j(:)',lBASE,1).*state(:,col_r_thetadot).^2); %1/2*I*theta^2
 js_eks = js_ekrot+j_eklin;
+
+%%%energy calculation 1: compute relative velocities. multiply the torque
+%%%times the relative velocity to get power and integrate
 blockpr = ...
-    [1 0 0 0
-    -1 1 0 0
-    0 -1 1 0
-    0 0 -1 1];
+    [1 -1  0  0
+    0   1 -1  0
+    0   0  1 -1
+    0   0  0  1];
 phirel = phi*blockpr;
 
 phireldot = phidot*blockpr;
 watt_torrel = phireldot.*fwd.tor;
+works_torrel = cumtrapz(fwd.t,watt_torrel);
+%%%END energy calculation 1: compute relative velocities. multiply the torque
+%%%times the relative velocity to get power and integrate
 
+%%%energy calculation 2: torque times the angular velocity of each segment
+%%%that the torque is applied to. mathematically this has to be equivalent
+%%%to the above. 
 nj =4;
 watts_ext(:,1) = - 0 ...
     + fwd.tor(:,1) .* state(:,1+nj);
@@ -71,13 +80,20 @@ watts_ext(:,3) = - fwd.tor(:,3) .* state(:,2+nj) ...
 watts_ext(:,4) = - fwd.tor(:,4) .* state(:,3+nj) ...
     + fwd.tor(:,4) .* state(:,4+nj);
 
-for ijoint =1:4
-    works_ext(:,ijoint) = cumtrapz(fwd.t,watts_ext(:,ijoint));
-end
-
 works_ext = cumtrapz(fwd.t,watts_ext);
 % plot(sum(-works_tor',1)+sum(js_gs,1)+sum(js_eks,1))
 e_delta = sum(works_ext)+sum(js_gs)+sum(js_eks);
+
+%%%energy calculation 3: change coordinate frames to relative joint angles,
+%%%change torques to relative torques, and compute the energy. 
+JRelFromExt = ...
+   [1   0   0   0
+   -1   1   0   0
+    0  -1   1   0
+    0   0  -1   1];
+
+%remember dXdt = JxFromQ ? dqdt
+%          tau = Jq' ? F
 
 if isfield(fwd,'vcerel')
     for i =1:6
@@ -87,6 +103,8 @@ else
     works_mus = [];
 end
 out.works_tor = works_ext;
+out.works_torrel = works_torrel;
+out.work_torrel = sum(works_torrel,2);
 out.work_tor = sum(works_ext,2);
 out.e_kin = sum(js_eks,2);
 out.e_gpot = sum(js_gs,2);

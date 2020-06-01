@@ -8,8 +8,6 @@ function [height,state,o]=run4seg_P_optstart(fi,tstart,P,varargin)
 % table of data from getJumperParams (returns a matrix) and then
 % getJumperStruct(inMatrix)
 
-%%TEMPLATE VARARGIN
-%%only 1 optional argument, doFlight.
 
 %% optimization chunk.
 fprintf('Computing initial starting gamma, stim, and muscle lengths for equilibrium.\n');
