@@ -1,4 +1,4 @@
-function out = overwrite_params_2017(b)
+function out = paramsOverwrite2017(b)
 % function out = overwriteparamsRLC2017(b,newb)
 % miraculously, rmapar does not change. 
 out = b;

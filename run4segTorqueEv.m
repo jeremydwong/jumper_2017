@@ -44,10 +44,10 @@ end
 P.i_mode = 1;
 P.DO_FLIGHT = 0;
 P.t_max = .7;
-odeopts = odeset('events',@events_4_pend);
+odeopts = odeset('events',@eventsTorqueJumper);
 % /events
 
-ode_handle = @ode_4_pend;P.ode_handle = ode_handle;
+ode_handle = @odeTorqueJumper;P.ode_handle = ode_handle;
 solver_handle = @ode45;
 ct = 0; stepsize = 0.001;
 state0 = in_state;
@@ -78,7 +78,7 @@ fip=     state(:,nseg+1:2*nseg);
 xbase=   state(:,2*nseg+1:2*nseg+2);
 xbasep=  state(:,2*nseg+3:2*nseg+4);
 [x,y,xp,yp,~,~]=xyc4(fi',fip',zeros(size(fip))',xbase',zeros(size(xbase))',zeros(size(xbase))',P.sk.l);
-[cmx,cmy,cmxp,cmyp,~,~]=kinematics_4_com(x,y,xp,yp,zeros(size(xp)),zeros(size(yp)),P.sk.l,P.sk.d,P.sk.mass(:));
+[cmx,cmy,cmxp,cmyp,~,~]=kinematics4com(x,y,xp,yp,zeros(size(xp)),zeros(size(yp)),P.sk.l,P.sk.d,P.sk.mass(:));
 
 height=cmy(end)+0.5/9.81*cmyp(end)^2;
 height = -height;

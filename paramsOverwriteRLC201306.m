@@ -1,5 +1,5 @@
-function out = overwriteparamsRLC201306(b)
-% function out = overwriteparamsRLC201306(b,newb)
+function out = paramsOverwriteRLC201306(b)
+% function out = paramsOverwriteRLC201306(b,newb)
 % miraculously, rmapar does not change. 
 out = b;
 fprintf('sk.l:');

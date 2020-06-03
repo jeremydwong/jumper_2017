@@ -1,5 +1,5 @@
-function [lcerel,gamma,stim,tor,out]=eqopt_start_P(fi,P)
-% function [lcerel,gamma,stim,tor,out]=eqopt_start_P(fi,p)
+function [lcerel,gamma,stim,tor,out]=equilibriumOpt(fi,P)
+% function [lcerel,gamma,stim,tor,out]=equilibriumOpt(fi,p)
 % compute lcerel, gamma, and stim for a starting position in equilibrium,
 % given joint angles fi and parameter structure p.
 % INPUTS:
@@ -20,7 +20,7 @@ j= P.sk.j(:);
 if isfield(P,'tor')
     tor= P.tor;
 else
-    fprintf('computing g torque since it was not passed to eqopt_start_P.\n');
+    fprintf('computing g torque since it was not passed to equilibriumOpt.\n');
     tor =get_g_torque(fi,P);
 end;
 rm= P.m.rm;

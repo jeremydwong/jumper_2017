@@ -1,15 +1,15 @@
-function [height_mus,state,o,tstim,fi22]=get_baseline_jumper_data% optimize muscle stimulations for jump height.
+function [height_mus,state,o,tstim,fi22]=mainOptimizeStandardJumper()% optimize muscle stimulations for jump height.
 x0=ones(1,6)*.01;
 a=getJumperParams;
 P = getJumperStruct(a);
 P = overwriteparams2017(P);
 % initial state of joints
-fi22=[2.5277    0.8295    2.5385    0.7504];
+fi22=[2.5277    0.8295    2.5385    0.7504]; %% '22' refers to Bobbert2006 grid.
 %%
 tstim = zeros(6,1);
 REDO_OPT_STIM = 0;
 if REDO_OPT_STIM
-    tstim = fminsearch(@(x)run4seg_P_optstart(x,fi22,P,0),x0);
+    tstim = fminsearch(@(x)run4seg_optstart(x,fi22,P,0),x0);
 else
     %     [0.1109
 %     0.1082
@@ -44,4 +44,4 @@ else
 end;
 %get output.
 %% simulate the solution.
-[height_mus,state,o]=run4seg_P_optstart(tstim,fi22,P,0);
+[height_mus,state,o]=run4seg_optstart(tstim,fi22,P,0);

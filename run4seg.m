@@ -1,5 +1,5 @@
-function [height,state,o]=run4seg_P(istate,istim,tstart,P,varargin)
-% function [height,state,o]=run4seg_P(tstart,istate,istim,P,varargin)
+function [height,state,o]=run4seg(istate,istim,tstart,P,varargin)
+% function [height,state,o]=run4seg(tstart,istate,istim,P,varargin)
 % This function computes the jump height. squat jump, no counter-movements.
 % INPUTS:
 % istate = angles[1:4],angular velocities[5:8],footX[9],footY[10],
@@ -53,11 +53,11 @@ d = P.sk.d;
 l = P.sk.l;
 mass = P.sk.mass;
 
-ode_handle = @ode_jumper;
+ode_handle = @odeMuscleJumper;
 
 %% compute initial kinematics of four segments and COM.
 [x,y,xp,yp,xdp,ydp]=xyc4(fi,zeros(size(fi)),zeros(size(fi)),[0;0],[0;0],[0;0],l);
-[cmx,cmy,cmxp,cmyp,~,~]=kinematics_4_com(x,y,xp,yp,xdp,ydp,l,d,mass);
+[cmx,cmy,cmxp,cmyp,~,~]=kinematics4com(x,y,xp,yp,xdp,ydp,l,d,mass);
 %% simulate.
 
 clcerel = clcerel(:);
@@ -82,7 +82,7 @@ ct=0;
 state0=[fi;fip;xbase;xbasep;clcerel;cgamma];
 stepsize=0.001;
 solver_handle = @ode45;
-odeopts = odeset('events',@events_jumper);
+odeopts = odeset('events',@eventsMuscleJumper);
 t_all = 0;
 state_all = state0(:)';
 P.i_mode = 1;
@@ -122,7 +122,7 @@ fip=     state(:,nseg+1:2*nseg);
 xbase=   state(:,2*nseg+1:2*nseg+2);
 xbasep=  state(:,2*nseg+3:2*nseg+4);
 [x,y,xp,yp,~,~]=xyc4(fi',fip',zeros(size(fip))',xbase',zeros(size(xbase))',zeros(size(xbase))',l);
-[cmx,cmy,cmxp,cmyp,~,~]=kinematics_4_com(x,y,xp,yp,zeros(size(xp)),zeros(size(yp)),l,d,mass(:));
+[cmx,cmy,cmxp,cmyp,~,~]=kinematics4com(x,y,xp,yp,zeros(size(xp)),zeros(size(yp)),l,d,mass(:));
 
 if ~do_flight
     height=cmy(end)+0.5/9.81*cmyp(end)^2;

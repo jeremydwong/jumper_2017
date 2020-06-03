@@ -1,5 +1,5 @@
-function [vnew,isterminal,direction] = events_4_pend(t,state,P)
-% function out = events_jumper(t,state,P)
+function [vnew,isterminal,direction] = eventsTorqueJumper(t,state,P)
+% function out = eventsMuscleJumper(t,state,P)
 % handle flags. 
 if P.i_mode ==1
     [~,sol]=P.ode_handle(t,state,P);

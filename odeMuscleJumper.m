@@ -1,6 +1,6 @@
 
-function [out1,out2,out3]=ode_jumper(t,state,P)
-% function [sol,statep,outstruct]=ode_jumper(t,state,P)
+function [out1,out2,out3]=odeMuscleJumper(t,state,P)
+% function [sol,statep,outstruct]=odeMuscleJumper(t,state,P)
 % statep,sol,outstruct
 % compute state derivatives of humanoid jumper.
 % that is the muscle velocities, and

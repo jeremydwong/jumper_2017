@@ -1,4 +1,4 @@
-function param = load_jumper_params
+function param = paramsLoadMFBsFile2Array
 % function param = getJumperParams
 % return parameter matrix. used in MFB and KvS code.
 load segpar.dat;

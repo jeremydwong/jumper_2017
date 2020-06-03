@@ -3,7 +3,7 @@
 plot_lines = {'linewidth',2};
 col=get(groot,'DefaultAxesColorOrder');
 %
-P = getJumperParametersJDW();
+P = paramsJDW();
 
 
 %initial conditions
@@ -16,7 +16,7 @@ if GO_OPTIMIZE_STIM
   nTries=2;
   for i =1:nTries
     x0=ones(1,6)*.04+rand(1,6)*0.01;
-    [currentTiming,currentHeight] = fminsearch(@(x)run4seg_P_optstart(fi0,x,P,0),x0);
+    [currentTiming,currentHeight] = fminsearch(@(x)run4seg_optstart(fi0,x,P,0),x0);
     if currentHeight < heightBest
       timeStimFull = currentTiming;
       heightBest = currentHeight;
@@ -35,9 +35,9 @@ else %use some pre-computed onset times that are good!
 end
 %% run the solution!
 
-[height,state,fwdData]=run4seg_P_optstart(fi0,...
+[height,state,fwdData]=run4seg_optstart(fi0,...
 timeStimFull,P,0);
 
 e = energy(state,fwdData,P);
 
-animate_jump(fwdData.x,fwdData.y,fwdData.cmx,fwdData.cmy);
+animateJump(fwdData.x,fwdData.y,fwdData.cmx,fwdData.cmy);

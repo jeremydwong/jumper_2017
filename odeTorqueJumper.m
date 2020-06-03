@@ -1,4 +1,4 @@
-function [statep,sol,outstruct]=ode_4_pend(t,state,P)
+function [statep,sol,outstruct]=odeTorqueJumper(t,state,P)
 % function [sol,statep,outstruct]=sol4P(t,state,P)
 % compute state derivatives of system.
 % system is a torque-driven quadruple-inverted pendulum.

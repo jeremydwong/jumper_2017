@@ -1,6 +1,6 @@
-function p = get_jumper_struct(param)
+function p = paramsMFBArray2Struct(param)
 % function p = getJumperStruct(param)
-% input: parameter matrix from getJumperParams
+% input: parameter matrix from paramsLoadMFBsFile2Array
 % returns parameter structure with two main substructs, m and sk.
 % m (23 fields, muscle parameters):
 % .nmus = number of muscles

@@ -1,4 +1,4 @@
-function [cmx,cmy,cmxp,cmyp,cmxdp,cmydp]=kinematics_4_com(x,y,xp,yp,xdp,ydp,l,d,m)
+function [cmx,cmy,cmxp,cmyp,cmxdp,cmydp]=kinematics4com(x,y,xp,yp,xdp,ydp,l,d,m)
 % function [cmx,cmy,cmxp,cmyp,cmxdp,cmydp]=kinematics_4(x,y,xp,yp,xdp,ydp,l,d,m)
 % compute kinematics for COM. 
 % WARNING!!! these inputs x, y, xp...have to be 5xn. the last one is the

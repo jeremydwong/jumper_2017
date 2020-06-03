@@ -1,4 +1,4 @@
-function animate_jump(x,y,cmx,cmy,fname)
+function animateJump(x,y,cmx,cmy,fname)
 figure;
 ds = 30;
 disp('press any key');
