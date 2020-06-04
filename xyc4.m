@@ -1,7 +1,12 @@
 function [x,y,xp,yp,xdp,ydp]=xyc4(fi,fip,fidp,xbase,xbasep,xbasedp,l)
 % function [x,y,xp,yp,xdp,ydp]=xyc4(fi,fip,fidp,xbase,xbasep,xbasedp,l)
-% returns the kinematics of the bodies. 
-% expects dimensions state x time.
+% returns the kinematics of alll bodies' COM. 
+% NOTE: expects dimensions for fi,fip,fidp as state x time.
+if nargin==2
+  l = fip; %this is sloppy. handles passing fi and l for static start use of xyc4. 
+  [fip,fidp] = deal(zeros(size(fi,1),size(fi,2)));
+  [xbase,xbasep,xbasedp] = deal(zeros(2,size(fi,2)));
+end
 
 lcfi=diag(l)*cos(fi);
 lsfi=diag(l)*sin(fi);

@@ -7,5 +7,5 @@ P.U = {};
 for i =1:4
     P.U{i} = spline(t_tor,P.tor(:,i));
 end
-% [height,state,tor_sim]=run4segTorque(state(1,1:12),P,0);
-[height,state,tor_sim]=run4segTorqueEv(state(1,1:12),P,0);
+% [height,state,tor_sim]=jumpMuscleTorque(state(1,1:12),P,0);
+[height,state,tor_sim]=jumpTorque(state(1,1:12),P,0);

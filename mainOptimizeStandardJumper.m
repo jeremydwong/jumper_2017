@@ -9,7 +9,7 @@ fi22=[2.5277    0.8295    2.5385    0.7504]; %% '22' refers to Bobbert2006 grid.
 tstim = zeros(6,1);
 REDO_OPT_STIM = 0;
 if REDO_OPT_STIM
-    tstim = fminsearch(@(x)run4seg_optstart(x,fi22,P,0),x0);
+    tstim = fminsearch(@(x)equilibriumOptThenJump(x,fi22,P,0),x0);
 else
     %     [0.1109
 %     0.1082
@@ -44,4 +44,4 @@ else
 end;
 %get output.
 %% simulate the solution.
-[height_mus,state,o]=run4seg_optstart(tstim,fi22,P,0);
+[height_mus,state,o]=equilibriumOptThenJump(tstim,fi22,P,0);

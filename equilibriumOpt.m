@@ -21,7 +21,7 @@ if isfield(P,'tor')
     tor= P.tor;
 else
     fprintf('computing g torque since it was not passed to equilibriumOpt.\n');
-    tor =get_g_torque(fi,P);
+    tor =computeGTorque(fi,P);
 end;
 rm= P.m.rm;
 c=P.m.c;
@@ -70,7 +70,7 @@ end
 
 doopt = 1;
 if doopt
-    opts = optimset('algorithm','sqp','Display','off');
+    opts = optimset('algorithm','active-set','Display','off');
 %     opts = optimset('algorithm','active-set','Display','off','GradConstr','On');
     % [fse]=fmincon(@(x)cost_FnormFmax(x,fmax),ones(6,1)*100,[],[],rmomarm,-tor,zeros(6,1),ones(6,1)*10000,[],opts);
     eqopt = struct;
@@ -84,10 +84,10 @@ if doopt
     eqopt.c3 = c3;
     C_FNORMNOISOM = 1;
     C_FNORM=2;
-    C_FNORMLCE = 3; %2017 this is what I've been using. 
+    C_FNORMFMAXLCE = 3; %2017 this is what I've been using. 
     C_FNORMrelFviaLCE = 4;
     %     cmeth=C_FNORM
-    cmeth = C_FNORMLCE;
+    cmeth = C_FNORMFMAXLCE;
     if cmeth==C_FNORM
         costTxt = 'FNORM';
         ggain = 2;
@@ -96,7 +96,7 @@ if doopt
         ggain = 10;
         [fse,cval,exitflag,output,lambda,grad,hessian]=fmincon(@(x)cost_FnormFmaxNOISOM(x,fmax,eqopt),ones(6,1)*1,[],[],rmomarm,-tor,ones(6,1).*fmax(:).*q0(:)*ggain,ones(6,1).*fmax(:),[],opts);
         costTxt = 'FNORMNOISOM';
-    elseif cmeth==C_FNORMLCE
+    elseif cmeth==C_FNORMFMAXLCE
         x0= ones(6,1)*1000;
         [fse,cval,exitflag,output,lambda,grad,hessian]= ...
             fmincon(@(x)cost_FnormFmaxlce(x,eqopt),...

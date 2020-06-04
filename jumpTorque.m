@@ -1,4 +1,4 @@
-function [height,state,fwd]=run4segTorqueEv(in_state,P,varargin)
+function [height,state,fwd]=jumpTorque(in_state,P,varargin)
 
 % tor_spline = [];
 % for i_tor = 1:size(length(a'))
@@ -78,7 +78,7 @@ fip=     state(:,nseg+1:2*nseg);
 xbase=   state(:,2*nseg+1:2*nseg+2);
 xbasep=  state(:,2*nseg+3:2*nseg+4);
 [x,y,xp,yp,~,~]=xyc4(fi',fip',zeros(size(fip))',xbase',zeros(size(xbase))',zeros(size(xbase))',P.sk.l);
-[cmx,cmy,cmxp,cmyp,~,~]=kinematics4com(x,y,xp,yp,zeros(size(xp)),zeros(size(yp)),P.sk.l,P.sk.d,P.sk.mass(:));
+[cmx,cmy,cmxp,cmyp,~,~]=xyCOM(x,y,xp,yp,zeros(size(xp)),zeros(size(yp)),P.sk.l,P.sk.d,P.sk.mass(:));
 
 height=cmy(end)+0.5/9.81*cmyp(end)^2;
 height = -height;

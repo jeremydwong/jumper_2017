@@ -73,8 +73,6 @@ end
 cur_stim = cur_stim(:)';
 % /set the muscle stimulation.
 
-% Coefficients to lock joints in the air.
-
 % sort out parameters and inputs
 nmus=length(P.m.rlsenul);
 
@@ -162,13 +160,13 @@ ese=rloi-rlsenul-lcerel.*rlceopt;
 fse=(ese>0).*kse.*ese.^2;
 epe=(lcerel-rlpenul).*rlceopt;
 fpe=(epe>0).*kpe.*epe.^2;
-% fpe = 0;
+
 fcerel=max((fse-fpe)./fmax,zeros(size(fmax)));
 flenrel=max(c1.*lcerel.^2+c2.*lcerel+c3,ones(size(fmax))*1e-5);
 
 if epe>0
-    fprintf('parallel forces normally applied.\n');
-end;
+    fprintf('WARNING PE (parallel elastic) forces applied.\n');
+end
 
 %calculate vfact and adarel
 vfact=min(q*3.333333,ones(size(q)));
@@ -247,9 +245,7 @@ else
     jDamp = zeros(4,1);    
 end
     %% /flight
-    
-    
-    % We aim at the following block of equations:
+    % The following block of equations are N-E 4-pendulum EOM, [X,Y]=f(fi)
     % A*[F1x,F2x,F3x,F4x,F1y,F2y,F3y,F4y,fidp1,fidp2,fidp3,fidp4,xbasedp,ybasedp]=b
     % where A is square, 14*14
     
@@ -270,12 +266,13 @@ end
         0      0      0   ds(4)     0      0      0    -dc(4)   0           0           0         -j(4)       0       0   ;
         air    0      0      0      0      0      0      0      0           0           0           0        1-air    0   ;
         0      0      0      0     air     0      0      0      0           0           0           0         0      1-air;
-        ];
+        ];    
     
     
+      % 
+      %torground = -1* ( fi(1) > P.phiground )*(fi(1)-P.phiground)*P.gstiff - (fi(1) > P.phiground )*fip(1)*P.gdamp;
+      torground = 0;
     
-    %torground = -1* ( fi(1) > P.phiground )*(fi(1)-P.phiground)*P.gstiff - (fi(1) > P.phiground )*fip(1)*P.gdamp;
-    torground = 0;
     b=[m(1)*(-dc(1)*fip(1)^2);
         m(2)*(-lc(1)*fip(1)^2-dc(2)*fip(2)^2);
         m(3)*(-lc(1)*fip(1)^2-lc(2)*fip(2)^2-dc(3)*fip(3)^2);

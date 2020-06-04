@@ -1,5 +1,5 @@
-function out = get_g_torque(fio,param)
-% function out = get_g_torque(fio,p)
+function out = computeGTorque(fio,param)
+% function out = computeGTorque(fio,p)
 % return jount torques from gravity. P must contain
 % INPUTS:
 % fio - starting position.

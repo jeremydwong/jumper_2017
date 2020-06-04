@@ -1,5 +1,5 @@
-function [height,state,o]=run4seg_optstart(fi,tstart,P,varargin)
-% function [height,state,o]=run4seg_optstart(tstart,fi,P,varargin)
+function [height,state,o]=equilibriumOptThenJump(fi,tstart,P,varargin)
+% function [height,state,o]=equilibriumOptThenJump(tstart,fi,P,varargin)
 % This function computes the jump height. squat jump, no counter-movements.
 % INPUTS:
 % tstart = onset timing of the 6 muscles.
@@ -16,7 +16,7 @@ fi=fi(:);
 
 istate = [fi(:)',zeros(1,4),zeros(1,2),zeros(1,2),clcerel(:)',cgamma(:)'];
 if isempty(varargin)
-    [height,state,o]=run4seg(istate,istim,tstart,P);
+    [height,state,o]=jumpMuscle(istate,istim,tstart,P);
 else
-    [height,state,o]=run4seg(istate,istim,tstart,P,varargin{:});
+    [height,state,o]=jumpMuscle(istate,istim,tstart,P,varargin{:});
 end;
